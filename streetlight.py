@@ -14,6 +14,8 @@ canvas.pack()
 #считывает машины, сначала координату, потом скорость
 # pos speed
 
+n=int(input("Введите коэффицент"))
+
 carsx1=[]
 carsy1=[]
 carblue=PhotoImage(file='bruh1.png')
@@ -106,17 +108,15 @@ for cyc in range(10):
         if car[0]<100:
             incoming_y+=1
 
-    print(incoming_x,incoming_y)
     #распределяем время соответсвено
     if incoming_x==incoming_y:
         green=int(cycle/(2*dt))
     else:
-        weight=incoming_x/(incoming_x+incoming_y)
-        print(cycle,weight,dt,cycle*weight/dt)
+        weight=(incoming_x**n)/(incoming_x**n+incoming_y**n)
         green=int(cycle*weight/dt)
 
     #говорит что должны делать машины на зеленый,желтый,красный,желтый соответсвено
-    print('green',green)
+    print('green')
     for i in range(green):
         go(carsx1,1)
         stop(carsy1,0)
@@ -128,7 +128,7 @@ for cyc in range(10):
         stop(carsy1,0)
         window.update()
         time.sleep(dt)
-    print('red',int(cycle/dt)-green)
+    print('red')
     for i in range(int(cycle/dt)-green):
         stop(carsx1,1)
         go(carsy1,0)
