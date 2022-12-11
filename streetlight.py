@@ -35,16 +35,16 @@ if render:
     greenlight=canvas.create_image(400,380,image=green_img,anchor=NW)
 
 
-
 if render:
     carblue=PhotoImage(file='car0.png')
     carred=PhotoImage(file='car1.png')
     carsx1=[[1000,max_speed,canvas.create_image(-3000*ptom,300,image=carblue,anchor=NW)]]
     for i in range(x):
-        carsx1.append([3*i,max_speed,canvas.create_image(-3*i*ptom,300,image=carblue,anchor=NW)])
-    carsy1=[[1000,max_speed,canvas.create_image(-3*i*ptom,300,image=carred,anchor=NW)]]
+        carsx1.append([3*i,max_speed,canvas.create_image(100-3*i*ptom,300,image=carblue,anchor=NW)])
+    carsy1=[[1000,max_speed,canvas.create_image(-3000*ptom,300,image=carred,anchor=NW)]]
     for i in range(y):
-        carsy1.append([3*i,0,canvas.create_image(330,-3000*ptom,image=carred,anchor=N)])
+        carsy1.append([10+3*i,0,canvas.create_image(330,100-3*i*ptom,image=carred,anchor=N)])
+
 
 
 else:
@@ -57,7 +57,7 @@ else:
 
 
 
-
+window.mainloop()
 
 
 #как ведут себя машины на жёлтом/красном
