@@ -9,7 +9,7 @@ dv=max_speed/7
 
 render=((input("Показывать движение машин? Y/N ")).lower())=='y'
 
-n=int(input("Введите коэффицент светофора (-1 для экспоненциального, 0 для обычного, 1 для линейного и т.д.): "))
+smart=((input("Использовать умный светофор? Y/N ")).lower())=='y'
 
 x=int(input("Введите количество машин с запада: "))
 y=int(input("Введите количество машин с севера: "))
@@ -34,53 +34,28 @@ if render:
     yellowlight=canvas.create_image(1400,1380,image=yellow_img,anchor=NW)
     greenlight=canvas.create_image(400,380,image=green_img,anchor=NW)
 
-#считывает машины, сначала координату, потом скорость
-# pos speed
 
-
-
-def f(x):
-    if n==-1:
-        return exp(x)
-    else:
-        return x**n
 
 if render:
     carblue=PhotoImage(file='car0.png')
     carred=PhotoImage(file='car1.png')
-    carsx1=[]
+    carsx1=[[1000,max_speed,canvas.create_image(-3000*ptom,300,image=carblue,anchor=NW)]]
     for i in range(x):
         carsx1.append([3*i,max_speed,canvas.create_image(-3*i*ptom,300,image=carblue,anchor=NW)])
-    carsy1=[]
+    carsy1=[[1000,max_speed,canvas.create_image(-3*i*ptom,300,image=carred,anchor=NW)]]
     for i in range(y):
-        carsy1.append([3*i,0,canvas.create_image(330,-3*i*ptom,image=carred,anchor=N)])
+        carsy1.append([3*i,0,canvas.create_image(330,-3000*ptom,image=carred,anchor=N)])
 
 
 else:
-    carsx1=[]
+    carsx1=[[1000,max_speed]]
     for i in range(x):
         carsx1.append([3*i,max_speed])
-    carsy1=[]
+    carsy1=[[1000,max_speed]]
     for i in range(y):
         carsy1.append([10+3*i,0])
 
 
-
-
-'''with open('carsx1.txt','r') as file:
-    for i in file.readlines():
-        a=list(map(int,i.split()))
-        a.append(canvas.create_image(-a[0]*ptom,400,image=carblue,anchor=NW))
-        carsx1.append(a)
-        
-
-with open('carsy1.txt','r') as file:
-    for i in file.readlines():
-        a=list(map(int,i.split()))
-        a.append(canvas.create_image(900,500-a[0]*ptom,image=carred))
-        carsy1.append(a)
-        
-'''
 
 
 
@@ -158,9 +133,13 @@ while going_x or going_y:
                 incoming_y+=1
 
         #распределяем время соответсвено
-        green=int(10*incoming_x/dt)
-        
-        red=int(10*incoming_y/dt)
+        if smart:
+            green=int(10*incoming_x/dt)
+            
+            red=int(10*incoming_y/dt)
+
+        else:
+            green,red=int(30/dt),int(30/dt)
 
         #говорит что должны делать машины на зеленый,желтый,красный,желтый соответсвено
         for i in range(green):
@@ -177,8 +156,9 @@ while going_x or going_y:
             if not (going_x or going_y):
                 break
 
-        canvas.move(greenlight,1000,1000)
-        canvas.move(yellowlight,-1000,-1000)
+        if render:
+            canvas.move(greenlight,1000,1000)
+            canvas.move(yellowlight,-1000,-1000)
 
         for i in range(int(7/dt)):
             stop(carsx1,1)
@@ -194,8 +174,9 @@ while going_x or going_y:
             if not (going_x or going_y):
                 break
 
-        canvas.move(yellowlight,1000,1000)
-        canvas.move(redlight,-1000,-1000)
+        if render:
+            canvas.move(yellowlight,1000,1000)
+            canvas.move(redlight,-1000,-1000)
 
         for i in range(red):
             stop(carsx1,1)
@@ -211,8 +192,9 @@ while going_x or going_y:
             if not (going_x or going_y):
                 break
 
-        canvas.move(redlight,1000,1000)
-        canvas.move(yellowlight,-1000,-1000)
+        if render:
+            canvas.move(redlight,1000,1000)
+            canvas.move(yellowlight,-1000,-1000)
 
         for i in range(int(7/dt)):
             stop(carsx1,1)
@@ -230,7 +212,8 @@ while going_x or going_y:
         if not (going_x or going_y):
             break
 
-        canvas.move(redlight,1000,1000)
-        canvas.move(greenlight,-1000,-1000)
+        if render:
+            canvas.move(redlight,1000,1000)
+            canvas.move(greenlight,-1000,-1000)
 
 print("Время чтобы все машины проехали перекрёсток: ", time_elapsed)
